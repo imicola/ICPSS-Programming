@@ -123,6 +123,8 @@ void __user_register_satic()
     std::cout << "│                                                 │\n";
     std::cout << "│  4. 本项目作者为imicola                         │\n";
     std::cout << "│                                                 │\n";
+    std::cout << "│  5. 本项目已经发布至github                      │\n";
+    std::cout << "│                                                 │\n";
     std::cout << "├─────────────────────────────────────────────────┤\n";
     std::cout << "│                 隐私声明                        │\n";
     std::cout << "├─────────────────────────────────────────────────┤\n";
