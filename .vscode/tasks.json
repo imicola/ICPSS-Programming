@@ -16,7 +16,7 @@
                 "D:/Code film/Programming Design Major Assignment/.code_exe/${fileBasenameNoExtension}.exe",
                 //生成exe文件
                 //GBK编码
-                "-fexec-charset=GBK"
+                // "-fexec-charset=GBK"
             ],
             "options": {
                 "cwd": "${fileDirname}"

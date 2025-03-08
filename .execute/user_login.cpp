@@ -4,6 +4,9 @@ HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 std::string username;
 std::string password;
 
+// 定义全局用户对象
+user_info current_user;
+
 void login();
 
 void user_login()
@@ -62,6 +65,9 @@ void login()
         int file_uuid;
         while (read_file >> file_uuid >> file_user_name >> file_password) {
             if (file_uuid == login_uuid && file_password == password) {
+                // 登录成功，创建用户对象并设置登录状态
+                current_user = user_info(username, password);
+                current_user.setLoggedIn(true);
                 login_success = 1;
                 break;
             }
@@ -114,5 +120,5 @@ void login()
     }
     std::cout << "登录成功！即将前往用户界面";
     fast_clear();
-    
+    _interface();
 }
