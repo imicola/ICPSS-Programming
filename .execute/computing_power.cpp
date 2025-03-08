@@ -177,22 +177,22 @@ std::vector<ComputingPlan> ComputingPlan::loadUserPlans(const std::string& user_
 // 显示计划信息
 void ComputingPlan::displayPlanInfo() const {
     std::cout << "\n┌─────────────────────────────────────────────────┐\n";
-    std::cout << "│                  算力计划详情                     │\n";
+    std::cout << "│                  算力计划详情                   │\n";
     std::cout << "├─────────────────────────────────────────────────┤\n";
-    std::cout << "│ 计划ID: " << std::left << std::setw(39) << plan_id << "│\n";
-    std::cout << "│ 计划名称: " << std::left << std::setw(37) << plan_name << "│\n";
-    std::cout << "│ 状态: " << std::left << std::setw(41) << status << "│\n";
-    std::cout << "│ 优先级: " << std::left << std::setw(39) << priority << "│\n";
+    std::cout << "│ 计划ID: " << std::left << std::setw(39) << plan_id << " │\n";
+    std::cout << "│ 计划名称: " << std::left << std::setw(37) << plan_name << "     │\n";
+    std::cout << "│ 状态: " << std::left << std::setw(41) << status << " │\n";
+    std::cout << "│ 优先级: " << std::left << std::setw(39) << priority << " │\n";
     std::cout << "├─────────────────────────────────────────────────┤\n";
     std::cout << "│                  资源需求                       │\n";
     std::cout << "├─────────────────────────────────────────────────┤\n";
-    std::cout << "│ CPU核心数: " << std::left << std::setw(36) << cpu_cores << "│\n";
-    std::cout << "│ CPU线程数: " << std::left << std::setw(36) << cpu_threads << "│\n";
-    std::cout << "│ GPU数量: " << std::left << std::setw(38) << gpu_count << "│\n";
+    std::cout << "│ CPU核心数: " << std::left << std::setw(36) << cpu_cores << " │\n";
+    std::cout << "│ CPU线程数: " << std::left << std::setw(36) << cpu_threads << " │\n";
+    std::cout << "│ GPU数量: " << std::left << std::setw(38) << gpu_count << " │\n";
     if (gpu_count > 0) {
-        std::cout << "│ GPU类型: " << std::left << std::setw(38) << gpu_type << "│\n";
+        std::cout << "│ GPU类型: " << std::left << std::setw(38) << gpu_type << " │\n";
     }
-    std::cout << "│ 存储空间(GB): " << std::left << std::setw(33) << storage_gb << "│\n";
+    std::cout << "│ 存储空间(GB): " << std::left << std::setw(33) << storage_gb << " │\n";
     std::cout << "├─────────────────────────────────────────────────┤\n";
     
     // 格式化时间
@@ -200,7 +200,7 @@ void ComputingPlan::displayPlanInfo() const {
     std::tm* create_tm = std::localtime(&create_time);
     std::strftime(time_buf, sizeof(time_buf), "%Y-%m-%d %H:%M:%S", create_tm);
     
-    std::cout << "│ 创建时间: " << std::left << std::setw(37) << time_buf << "│\n";
+    std::cout << "│ 创建时间: " << std::left << std::setw(37) << time_buf << " │\n";
     
     // 计算预计完成时间
     if (estimated_duration > 0) {

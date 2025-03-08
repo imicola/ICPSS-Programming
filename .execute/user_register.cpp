@@ -73,23 +73,23 @@ void user_info::in_file()
     }
 }
 
-std::string user_info::getUsername() const
+std::string user_info::get_User_name() const
 {
     return user_name;
 };
 
-int user_info::getUID() const
+int user_info::get_UID() const
 {
     return user_hash_uuid;
 };
 
-bool user_info::isLoggedIn() const
+bool user_info::is_LoggedIn() const
 {
     return is_logged_in;
 };
 
 // 实现设置登录状态的方法
-void user_info::setLoggedIn(bool status)
+void user_info::set_LoggedIn(bool status)
 {
     is_logged_in = status;
 }

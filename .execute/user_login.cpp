@@ -67,7 +67,7 @@ void login()
             if (file_uuid == login_uuid && file_password == password) {
                 // 登录成功，创建用户对象并设置登录状态
                 current_user = user_info(username, password);
-                current_user.setLoggedIn(true);
+                current_user.set_LoggedIn(true);
                 login_success = 1;
                 break;
             }

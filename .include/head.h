@@ -80,11 +80,11 @@ public:
     user_info();
     // Getters
     int _get_uuid();
-    std::string getUsername() const;
-    int getUID() const;
-    bool isLoggedIn() const;
+    std::string get_User_name() const;
+    int get_UID() const;
+    bool is_LoggedIn() const;
     // Setters
-    void setLoggedIn(bool status);
+    void set_LoggedIn(bool status);
     void in_file();
 
 };

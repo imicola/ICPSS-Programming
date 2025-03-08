@@ -5,6 +5,8 @@ void _edit_plan();
 void _create_plan();
 void _delete_plan();
 void _interface();
+void _plan_check();
+void power_situation();
 
 // interface 居然是关键字(震惊)
 void _interface()
@@ -12,18 +14,35 @@ void _interface()
     user__interface();
     char _ch;
     _ch = getch();
-    system("cls");
+    // system("cls");
     if (_ch == '1') {
-        // _plan_check();
+        _plan_check();
     }
     else if (_ch == '2') {
         _plan_edit_interface();
+    }
+    else if (_ch == '3') {
+        power_situation();
+    }
+    else if (_ch == '0') {
+        // 用户登出
+        current_user.set_LoggedIn(false);
+        // 提示用户已登出
+        std::cout << "您已成功登出系统。" << std::endl;
+        std::cout << "按任意键返回主菜单...";
+        fast_clear();
+        head();
+    }
+    else {
+        std::cout << "无效选择，请重试。" << std::endl;
+        _interface();
     }
 }
 
 // 计划编辑
 void _plan_edit_interface()
 {
+    system("cls");
     std::cout << "\n\n";
     std::cout << "┌─────────────────────────────────────────────────┐\n";
     std::cout << "│                  算力计划编辑                   │\n";
@@ -39,7 +58,6 @@ void _plan_edit_interface()
     std::cout << "请选择操作 (1-3): ";
     char choice = _getch();
     system("cls");
-
     switch (choice) {
     case '1':
         _create_plan();
@@ -59,21 +77,18 @@ void _plan_edit_interface()
 // 创建算力使用计划
 void _create_plan()
 {
-    std::cin.ignore();
     std::string name, description, user_id, gpu_type;
     int priority, cpu_cores, cpu_threads, gpu_count;
     double storage_gb;
-
+    user_id = current_user.get_User_name(); // 获取当前用户ID
     std::cout << "\n──────── 创建算力使用计划 ────────\n\n";
 
     std::cout << "计划名称: ";
+    std::cin.ignore();
     std::getline(std::cin, name);
 
     std::cout << "计划描述: ";
     std::getline(std::cin, description);
-
-    std::cout << "用户ID: ";
-    std::getline(std::cin, user_id);
 
     std::cout << "优先级 (1-10): ";
     std::cin >> priority;
@@ -110,17 +125,18 @@ void _create_plan()
     }
 
     std::cout << "\n按任意键继续...";
-    _getch();
+    fast_clear();
+    _interface();
 }
 
 // 编辑算力使用计划
 void _edit_plan()
 {
-    std::cin.ignore();
     std::string plan_id;
     std::cout << "\n──────── 编辑算力使用计划 ────────\n\n";
 
     std::cout << "请输入要编辑的计划ID: ";
+    std::cin.ignore();
     std::getline(std::cin, plan_id);
 
     try {
@@ -202,7 +218,8 @@ void _edit_plan()
     }
 
     std::cout << "\n按任意键继续...";
-    _getch();
+    fast_clear();
+    _interface();
 }
 
 // 删除算力使用计划
@@ -212,6 +229,7 @@ void _delete_plan()
     std::cout << "\n──────── 删除算力使用计划 ────────\n\n";
 
     std::cout << "请输入要删除的计划ID: ";
+    std::cin.ignore();
     std::getline(std::cin, plan_id);
 
     try {
@@ -280,5 +298,156 @@ void _delete_plan()
     }
 
     std::cout << "\n按任意键继续...";
-    _getch();
+    fast_clear();
+    _interface();
+}
+
+void _plan_check()
+{
+    system("cls");
+    std::cout << "\n\n";
+    std::cout << "┌─────────────────────────────────────────────────┐\n";
+    std::cout << "│                 我的算力计划                    │\n";
+    std::cout << "├─────────────────────────────────────────────────┤\n";
+
+    // 获取用户ID（使用当前登录用户名）
+    std::string user_id = current_user.get_User_name();
+
+    try {
+        // 加载用户的所有计划
+        std::vector<ComputingPlan> user_plans = ComputingPlan::loadUserPlans(user_id, "computing_plans.txt");
+        if (user_plans.empty()) {
+            std::cout << "│                                                 │\n";
+            std::cout << "│            您还没有创建任何算力计划             │\n";
+            std::cout << "│                                                 │\n";
+            std::cout << "└─────────────────────────────────────────────────┘\n";
+        }
+        else {
+            std::cout << "│                                                 │\n";
+            std::cout << "│  计划ID                状态        优先级       │\n";
+            std::cout << "│  ────────────────────────────────────────────   │\n";
+
+            for (const auto &plan : user_plans) {
+                std::cout << "│  " << std::left << std::setw(20) << plan.getPlanId() << std::left << std::setw(12)
+                          << plan.getStatus() << std::left << std::setw(10) << plan.getPriority() << "     │\n";
+            }
+
+            std::cout << "│                                                 │\n";
+            std::cout << "└─────────────────────────────────────────────────┘\n";
+
+            // 查看详情选项
+            std::cout << "\n是否查看计划详情? (y/n): ";
+            char choice = _getch();
+
+            if (choice == 'y' || choice == 'Y') {
+                std::string plan_id;
+                std::cout << "\n\n请输入要查看的计划ID: ";
+                std::cin.ignore();
+                std::getline(std::cin, plan_id);
+
+                // 在用户计划中查找指定ID
+                bool found = false;
+                for (const auto &plan : user_plans) {
+                    if (plan.getPlanId() == plan_id) {
+                        plan.displayPlanInfo();
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    std::cout << "\n未找到ID为 " << plan_id << " 的计划。\n";
+                }
+            }
+        }
+
+    } catch (const std::exception &e) {
+        std::cout << "│                                                 │\n";
+        std::cout << "│           加载计划时出错: " << std::left << std::setw(19) << e.what() << "│\n";
+        std::cout << "│                                                 │\n";
+        std::cout << "└─────────────────────────────────────────────────┘\n";
+    }
+
+    std::cout << "\n按任意键继续...";
+    fast_clear();
+    _interface();
+}
+
+void power_situation()
+{
+    system("cls");
+    std::cout << "\n\n";
+    std::cout << "┌─────────────────────────────────────────────────┐\n";
+    std::cout << "│               算力使用总体情况                  │\n";
+    std::cout << "├─────────────────────────────────────────────────┤\n";
+
+    // 获取当前用户ID
+    std::string user_id = current_user.get_User_name();
+    try {
+        // 加载用户的所有计划
+        std::vector<ComputingPlan> user_plans = ComputingPlan::loadUserPlans(user_id);
+
+        if (user_plans.empty()) {
+            std::cout << "│                                                 │\n";
+            std::cout << "│         当前用户没有任何算力使用计划            │\n";
+            std::cout << "│                                                 │\n";
+        }
+        else {
+            // 计算总体资源使用情况
+            int total_plans = user_plans.size();
+            int pending_plans = 0;
+            int running_plans = 0;
+            int completed_plans = 0;
+            int failed_plans = 0;
+
+            int total_cpu_cores = 0;
+            int total_gpu_count = 0;
+            double total_storage = 0.0;
+
+            for (const auto &plan : user_plans) {
+                // 统计状态
+                std::string status = plan.getStatus();
+                if (status == "Pending")
+                    pending_plans++;
+                else if (status == "Running")
+                    running_plans++;
+                else if (status == "Completed")
+                    completed_plans++;
+                else if (status == "Failed")
+                    failed_plans++;
+
+                // 统计资源
+                total_cpu_cores += plan.getCpuCores();
+                total_gpu_count += plan.getGpuCount();
+                total_storage += plan.getStorageGb();
+            }
+
+            // 显示统计信息
+            std::cout << "│  总计划数量: " << std::left << std::setw(34) << total_plans << " │\n";
+            std::cout << "│                                                 │\n";
+            std::cout << "│  状态分布:                                      │\n";
+            std::cout << "│    等待中: " << std::left << std::setw(35) << pending_plans << "  │\n";
+            std::cout << "│    运行中: " << std::left << std::setw(35) << running_plans << "  │\n";
+            std::cout << "│    已完成: " << std::left << std::setw(35) << completed_plans << "  │\n";
+            std::cout << "│    失败: " << std::left << std::setw(37) << failed_plans << "  │\n";
+            std::cout << "│                                                 │\n";
+            std::cout << "│  资源使用总计:                                  │\n";
+            std::cout << "│    CPU核心数: " << std::left << std::setw(33) << total_cpu_cores << " │\n";
+            std::cout << "│    GPU数量: " << std::left << std::setw(35) << total_gpu_count << " │\n";
+            std::cout << "│    存储空间(GB): " << std::left << std::setw(30) << total_storage << " │\n";
+        }
+
+        std::cout << "│                                                 │\n";
+        std::cout << "└─────────────────────────────────────────────────┘\n";
+
+    } catch (const std::exception &e) {
+        std::cout << "│                                                 │\n";
+        std::cout << "│  获取算力使用情况时出错: " << std::left << std::setw(23) << e.what() << "│\n";
+        std::cout << "│                                                 │\n";
+        std::cout << "└─────────────────────────────────────────────────┘\n";
+    }
+
+    std::cout << "\n按任意键继续...";
+    fast_clear();
+    _interface();
 }
