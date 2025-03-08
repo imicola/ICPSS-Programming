@@ -25,8 +25,9 @@
 .execute/        - 功能实现源文件
   |- head.cpp    - 主菜单实现
   |- other.cpp   - 辅助功能函数
-  |- static interface.cpp - 静态界面实现
+  |- static_interface.cpp - 静态界面实现
   |- user_register.cpp    - 用户注册功能
+  |- user.cpp    - 用户界面源文件
 .include/        - 头文件
   |- head.h      - 函数声明
 code/            - 主程序入口
@@ -56,7 +57,6 @@ code/            - 主程序入口
 
 开发计划
 
-<input disabled="" type="checkbox"> 完成用户登录功能
 
 <input disabled="" type="checkbox"> 实现系统状态监控
 

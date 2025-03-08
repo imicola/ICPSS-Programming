@@ -45,4 +45,6 @@ void head()
         exit(0);
     else if (_head_get_num == '2')
         user_register_satic();
+    else if (_head_get_num == '1')
+        user_login();
 }

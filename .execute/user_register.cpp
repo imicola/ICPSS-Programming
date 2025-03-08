@@ -6,6 +6,7 @@ class user_info
 private:
     std::string user_name;
     std::string user_password;
+    int user_hash_uuid;
     int _get_uuid()
     {
         // 使用user_name和user_passworld生成int类型哈希uuid，使得写入文件和查找的时候更加容易
@@ -15,7 +16,13 @@ private:
         //组合hash确保在int范围
         return static_cast<int>((name_hash ^ (pass_hash << 1)) % INT_MAX);
     }
-    int user_hash_uuid = _get_uuid();
+public:
+    user_info(const std::string &_user_name, const std::string &_user_password)
+    {
+        user_name = _user_name;
+        user_password = _user_password;
+        user_hash_uuid = _get_uuid();
+    }
     void in_file()
     {
         // 检查文件是否存在
@@ -28,24 +35,37 @@ private:
         check_file.close();
         // 打开文件
         file.open(file_path, std::ios::app);
+        // 检查用户名是否已存在
+        if (file_exists) {
+            std::ifstream read_file(file_path);
+            int exist_uuid;
+            std::string exist_username, exist_password;
+            bool user_exists = false;
+            while (read_file >> exist_uuid >> exist_username >> exist_password) {
+                if (exist_username == user_name) {
+                    user_exists = true;
+                    break;
+                }
+            }
+            read_file.close();
+            if (user_exists) {
+                std::cerr << "用户名已存在，请选择其他用户名";
+                file.close();
+                fast_clear();
+                user_Register();
+            }
+        }
         if (file.is_open()) {
             file << user_hash_uuid << " " << user_name << " " << user_password << std::endl;
             file.close();
+            std::cout << "注册成功！即将前往登录界面";
+            fast_clear();
+            user_login();
         }
         else {
-            std::cerr << "无法打开或创建文件: " << file_path << std::endl;
+            std::cerr << "无法打开或创建文件: " << file_path;
+            exit(0);
         }
-    }
-
-public:
-    user_info(const std::string &_user_name, const std::string &_user_password)
-    {
-        user_name = _user_name;
-        user_password = _user_password;
-    }
-    void call_in_file()
-    {
-        in_file();
     }
 };
 
@@ -161,11 +181,11 @@ void user_Register()
     // 注册成功
     COORD _pos_success = {16, 9};
     SetConsoleCursorPosition(hConsole, _pos_success);
-    std::cout << "注册成功！";
     // 将user_info保存到类中
     user_info _user(username, password);
     // 模拟password销毁过程
     password.clear();
     username.clear();
-    _user.call_in_file();
+    // 存入信息
+    _user.in_file();
 }
