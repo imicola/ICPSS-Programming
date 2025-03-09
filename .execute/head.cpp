@@ -24,9 +24,7 @@ void head()
     std::cout << "│  [3] 系统说明                                   │\n";
     std::cout << "│  [4] 查看算力资源                               │\n";
     std::cout << "│  [5] 调度策略介绍                               │\n";
-    std::cout << "│  [6] 系统状态监控                               │\n";
-    std::cout << "│  [7] 算力任务提交                               │\n";
-    std::cout << "│  [8] 历史记录查询                               │\n";
+    std::cout << "│  [6] 管理系统登录                               │\n";
     std::cout << "│  [0] 退出系统                                   │\n";
     std::cout << "│                                                 │\n";
     std::cout << "└─────────────────────────────────────────────────┘\n\n";
@@ -47,4 +45,7 @@ void head()
         user_register_satic();
     else if (_head_get_num == '1')
         user_login();
+    else if (_head_get_num == '6') {
+        admin_login();
+    }
 }

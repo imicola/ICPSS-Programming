@@ -70,6 +70,8 @@ void _plan_edit_interface()
         break;
     default:
         std::cout << "无效选择，请重试。" << std::endl;
+        fast_clear();
+        _plan_edit_interface();
         break;
     }
 }

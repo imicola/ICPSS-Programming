@@ -180,7 +180,7 @@ void ComputingPlan::displayPlanInfo() const {
     std::cout << "│                  算力计划详情                   │\n";
     std::cout << "├─────────────────────────────────────────────────┤\n";
     std::cout << "│ 计划ID: " << std::left << std::setw(39) << plan_id << " │\n";
-    std::cout << "│ 计划名称: " << std::left << std::setw(37) << plan_name << "     │\n";
+    std::cout << "│ 计划名称: " << std::left << std::setw(37) << plan_name << "   │\n";
     std::cout << "│ 状态: " << std::left << std::setw(41) << status << " │\n";
     std::cout << "│ 优先级: " << std::left << std::setw(39) << priority << " │\n";
     std::cout << "├─────────────────────────────────────────────────┤\n";

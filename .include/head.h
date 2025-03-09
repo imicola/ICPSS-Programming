@@ -107,3 +107,5 @@ void _create_plan();
 void _edit_plan();
 void _delete_plan();
 void _interface();
+void administrator_interface();
+void admin_login();
