@@ -21,7 +21,6 @@ void displaySystemInfo()
     std::cout << "│  和公平分配.                                   │\n";
     std::cout << "│                                                 │\n";
     std::cout << "└─────────────────────────────────────────────────┘\n";
-    std::cout << "\n按任意键返回主菜单...";
     fast_clear();
     head();
 }
@@ -55,7 +54,6 @@ void displayResourceInfo()
               << "分钟                     │\n";
     std::cout << "│                                                 │\n";
     std::cout << "└─────────────────────────────────────────────────┘\n";
-    std::cout << "\n按任意键返回主菜单...";
     fast_clear();
     head();
 }
@@ -98,7 +96,6 @@ void SchedulingStrategies()
     std::cout << "│     任务执行过程中遇到错误,未能正常完成        │\n";
     std::cout << "│                                                 │\n";
     std::cout << "└─────────────────────────────────────────────────┘\n";
-    std::cout << "\n按任意键返回主菜单...";
     fast_clear();
     head();
 }

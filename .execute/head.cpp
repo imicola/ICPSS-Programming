@@ -13,7 +13,7 @@ void head()
     std::cout << R"(Intelligent Computing Power Scheduling System)" << "\n";
     std::cout << "智能算力调度系统" << "\n";
     std::cout << "Version: 1.0.0" << "\n";
-    std::cout << "Author: imicola" << "\n" << "\n";
+    std::cout << "Author: imicola" << "\n\n";
     // 显示边框
     std::cout << "┌─────────────────────────────────────────────────┐\n";
     std::cout << "│             欢迎使用智能算力调度系统            │\n";

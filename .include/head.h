@@ -99,6 +99,7 @@ void SchedulingStrategies();
 void __user_register_satic();
 void user_register_satic();
 void user_Register();
+// 读取字符清屏 -> (按任意键继续操作)
 void fast_clear();
 int get_uuid(const std::string &user_name, const std::string &user_password);
 void user_login();
@@ -109,3 +110,5 @@ void _delete_plan();
 void _interface();
 void administrator_interface();
 void admin_login();
+// 智能清除缓冲区
+void clearInputBuffer();

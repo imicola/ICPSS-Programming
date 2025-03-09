@@ -35,6 +35,7 @@ void _interface()
     }
     else {
         std::cout << "无效选择，请重试。" << std::endl;
+        system("cls");
         _interface();
     }
 }
@@ -60,12 +61,18 @@ void _plan_edit_interface()
     system("cls");
     switch (choice) {
     case '1':
+        std::cin.clear(); // 清除错误状态
+        std::cin.sync();  // 同步C和C++的输入缓冲区
         _create_plan();
         break;
     case '2':
+        std::cin.clear();
+        std::cin.sync();
         _edit_plan();
         break;
     case '3':
+        std::cin.clear();
+        std::cin.sync();
         _delete_plan();
         break;
     default:
@@ -85,33 +92,93 @@ void _create_plan()
     user_id = current_user.get_User_name(); // 获取当前用户ID
     std::cout << "\n──────── 创建算力使用计划 ────────\n\n";
 
+    // 清除之前可能留在缓冲区的换行符
+    clearInputBuffer();
+
     std::cout << "计划名称: ";
-    std::cin.ignore();
     std::getline(std::cin, name);
 
     std::cout << "计划描述: ";
     std::getline(std::cin, description);
 
     std::cout << "优先级 (1-10): ";
-    std::cin >> priority;
+    while (!(std::cin >> priority) || priority < 1 || priority > 10) {
+        std::cout << "无效输入，请输入1-10之间的数字: ";
+        std::cin.clear(); // 清除错误标志
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
 
     std::cout << "CPU核心数: ";
-    std::cin >> cpu_cores;
+    while (!(std::cin >> cpu_cores) || cpu_cores <= 0) {
+        std::cout << "无效输入，请输入正整数: ";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
 
     std::cout << "CPU线程数: ";
-    std::cin >> cpu_threads;
+    while (!(std::cin >> cpu_threads) || cpu_threads <= 0) {
+        std::cout << "无效输入，请输入正整数: ";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
 
     std::cout << "GPU数量: ";
-    std::cin >> gpu_count;
+    while (!(std::cin >> gpu_count) || gpu_count < 0) {
+        std::cout << "无效输入，请输入非负整数: ";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
 
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // 清除缓冲区
     if (gpu_count > 0) {
-        std::cin.ignore(); // 清除输入缓冲区
-        std::cout << "GPU类型: ";
-        std::getline(std::cin, gpu_type);
+        // 读取可用的GPU类型列表
+        std::vector<std::string> gpu_types;
+        std::ifstream gpu_file("gpu_types.txt");
+        if (gpu_file.is_open()) {
+            std::string line;
+            while (std::getline(gpu_file, line)) {
+                if (!line.empty()) {
+                    gpu_types.push_back(line);
+                }
+            }
+            gpu_file.close();
+        }
+
+        if (gpu_types.empty()) {
+            // 如果无法读取GPU类型或列表为空，使用默认值
+            gpu_type = "NVIDIA A100";
+            std::cout << "GPU类型: " << gpu_type << " (默认)" << std::endl;
+        }
+        else {
+            // system("cls");
+            std::cout << "\n请选择GPU类型:\n";
+            for (size_t i = 0; i < gpu_types.size(); i++) {
+                std::cout << (i + 1) << ". " << gpu_types[i] << std::endl;
+            }
+
+            int gpu_choice;
+            std::cout << "\n请输入选项编号 (1-" << gpu_types.size() << "): ";
+            while (!(std::cin >> gpu_choice) || gpu_choice < 1 || gpu_choice > static_cast<int>(gpu_types.size())) {
+                std::cout << "无效选择，请重新输入: ";
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            }
+
+            gpu_type = gpu_types[gpu_choice - 1];
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+    }
+    else {
+        gpu_type = ""; // 如果GPU数量为0，则GPU类型为空
     }
 
     std::cout << "存储空间 (GB): ";
-    std::cin >> storage_gb;
+    while (!(std::cin >> storage_gb) || storage_gb <= 0) {
+        std::cout << "无效输入，请输入正数: ";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     // 创建计算计划对象
     ComputingPlan plan(name, user_id, cpu_cores, cpu_threads, gpu_count, gpu_type, storage_gb);
@@ -126,7 +193,6 @@ void _create_plan()
         std::cout << "\n 计划创建失败！" << std::endl;
     }
 
-    std::cout << "\n按任意键继续...";
     fast_clear();
     _interface();
 }
@@ -137,9 +203,15 @@ void _edit_plan()
     std::string plan_id;
     std::cout << "\n──────── 编辑算力使用计划 ────────\n\n";
 
+    // 清除之前可能留在缓冲区的换行符
+    clearInputBuffer();
+
     std::cout << "请输入要编辑的计划ID: ";
-    std::cin.ignore();
     std::getline(std::cin, plan_id);
+    if (plan_id.empty()) {
+        std::cout << "计划ID不能为空，请重新输入: ";
+        std::getline(std::cin, plan_id);
+    }
 
     try {
         // 从文件加载计划
@@ -182,9 +254,13 @@ void _edit_plan()
                 break;
             case '3':
                 std::cout << "\n新优先级 (1-10): ";
-                std::cin >> new_int_value;
+                while (!(std::cin >> new_int_value) || new_int_value < 1 || new_int_value > 10) {
+                    std::cout << "无效输入，请输入1-10之间的数字: ";
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                }
                 plan.setPriority(new_int_value);
-                std::cin.ignore();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 modified = true;
                 break;
             case '4':
@@ -218,8 +294,6 @@ void _edit_plan()
     } catch (const std::runtime_error &e) {
         std::cout << "\n错误: " << e.what() << std::endl;
     }
-
-    std::cout << "\n按任意键继续...";
     fast_clear();
     _interface();
 }
@@ -230,8 +304,9 @@ void _delete_plan()
     std::string plan_id;
     std::cout << "\n──────── 删除算力使用计划 ────────\n\n";
 
+    // 清除之前可能留在缓冲区的换行符
+    clearInputBuffer();
     std::cout << "请输入要删除的计划ID: ";
-    std::cin.ignore();
     std::getline(std::cin, plan_id);
 
     try {
@@ -299,7 +374,6 @@ void _delete_plan()
         std::cout << "\n错误: " << e.what() << std::endl;
     }
 
-    std::cout << "\n按任意键继续...";
     fast_clear();
     _interface();
 }
@@ -369,8 +443,6 @@ void _plan_check()
         std::cout << "│                                                 │\n";
         std::cout << "└─────────────────────────────────────────────────┘\n";
     }
-
-    std::cout << "\n按任意键继续...";
     fast_clear();
     _interface();
 }
@@ -449,7 +521,6 @@ void power_situation()
         std::cout << "└─────────────────────────────────────────────────┘\n";
     }
 
-    std::cout << "\n按任意键继续...";
     fast_clear();
     _interface();
 }

@@ -6,9 +6,11 @@
 
 void fast_clear()
 {
-    char ch;
-    ch = _getch(); // 快速读取清空缓冲区
+    std::cout << "\n\n\n\n按任意键继续...";
+    _getch();  // 使用_getch()而不是依赖std::cin
     system("cls");
+    std::cin.clear();  // 清除错误标志
+    std::cin.sync();
 }
 
 // 获取哈希值
@@ -20,4 +22,11 @@ int get_uuid(const std::string &user_name, const std::string &user_password)
     size_t pass_hash = hash_func(user_password);
     //组合hash确保在int范围
     return static_cast<int>((name_hash ^ (pass_hash << 1)) % INT_MAX);
+}
+
+void clearInputBuffer()
+{
+    if (std::cin.rdbuf()->in_avail() > 0) {
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
 }
