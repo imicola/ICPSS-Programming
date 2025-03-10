@@ -112,3 +112,7 @@ void administrator_interface();
 void admin_login();
 // 智能清除缓冲区
 void clearInputBuffer();
+void _admin_static();
+void check_all();
+void admin_revise();
+void _status();
