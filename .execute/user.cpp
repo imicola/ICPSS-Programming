@@ -16,12 +16,18 @@ void _interface()
     _ch = getch();
     // system("cls");
     if (_ch == '1') {
+        std::cin.clear();
+        std::cin.sync();
         _plan_check();
     }
     else if (_ch == '2') {
+        std::cin.clear();
+        std::cin.sync();
         _plan_edit_interface();
     }
     else if (_ch == '3') {
+        std::cin.clear();
+        std::cin.sync();
         power_situation();
     }
     else if (_ch == '0') {
@@ -53,7 +59,7 @@ void _plan_edit_interface()
     std::cout << "│                                                 │\n";
     std::cout << "│  2. 编辑算力使用计划                            │\n";
     std::cout << "│                                                 │\n";
-    std::cout << "│  2. 删除算力使用计划                            │\n";
+    std::cout << "│  3. 删除算力使用计划                            │\n";
     std::cout << "│                                                 │\n";
     std::cout << "└─────────────────────────────────────────────────┘\n";
     std::cout << "请选择操作 (1-3): ";
@@ -414,11 +420,12 @@ void _plan_check()
             // 查看详情选项
             std::cout << "\n是否查看计划详情? (y/n): ";
             char choice = _getch();
-
+            std::cin.clear();
+            std::cin.sync();
             if (choice == 'y' || choice == 'Y') {
                 std::string plan_id;
                 std::cout << "\n\n请输入要查看的计划ID: ";
-                std::cin.ignore();
+                clearInputBuffer();
                 std::getline(std::cin, plan_id);
 
                 // 在用户计划中查找指定ID

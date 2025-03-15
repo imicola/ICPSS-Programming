@@ -180,7 +180,7 @@ void ComputingPlan::displayPlanInfo() const {
     std::cout << "│                  算力计划详情                   │\n";
     std::cout << "├─────────────────────────────────────────────────┤\n";
     std::cout << "│ 计划ID: " << std::left << std::setw(39) << plan_id << " │\n";
-    std::cout << "│ 计划名称: " << std::left << std::setw(36) << plan_name << "│\n";
+    std::cout << "│ 计划名称: " << std::left << std::setw(38) << plan_name << "│\n";
     std::cout << "│ 状态: " << std::left << std::setw(41) << status << " │\n";
     std::cout << "│ 优先级: " << std::left << std::setw(39) << priority << " │\n";
     std::cout << "├─────────────────────────────────────────────────┤\n";
@@ -207,7 +207,7 @@ void ComputingPlan::displayPlanInfo() const {
         std::time_t est_complete = create_time + estimated_duration;
         std::tm* est_tm = std::localtime(&est_complete);
         std::strftime(time_buf, sizeof(time_buf), "%Y-%m-%d %H:%M:%S", est_tm);
-        std::cout << "│ 预计完成时间: " << std::left << std::setw(33) << time_buf << "│\n";
+        std::cout << "│ 预计完成时间: " << std::left << std::setw(34) << time_buf << "│\n";
     }
     
     std::cout << "└─────────────────────────────────────────────────┘\n";

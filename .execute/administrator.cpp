@@ -255,11 +255,11 @@ void admin_revise()
         std::cout << "│                                                 │\n";
         std::cout << "│  当前系统资源:                                  │\n";
         std::cout << "│                                                 │\n";
-        std::cout << "│  1. CPU 核心数: " << std::left << std::setw(28) << resources.total_cpu_cores << "   │\n";
-        std::cout << "│  2. CPU 线程数: " << std::left << std::setw(28) << resources.total_cpu_threads << "   │\n";
-        std::cout << "│  3. GPU 数量: " << std::left << std::setw(31) << resources.total_gpu_count << "  │\n";
-        std::cout << "│  4. GPU 类型: " << std::left << std::setw(31) << resources.gpu_type << "  │\n";
-        std::cout << "│  5. 存储空间(GB): " << std::left << std::setw(26) << resources.total_storage_gb << "   │\n";
+        std::cout << "│  1. CPU 核心数: " << std::left << std::setw(29) << resources.total_cpu_cores << "   │\n";
+        std::cout << "│  2. CPU 线程数: " << std::left << std::setw(29) << resources.total_cpu_threads << "   │\n";
+        std::cout << "│  3. GPU 数量: " << std::left << std::setw(32) << resources.total_gpu_count << "  │\n";
+        std::cout << "│  4. GPU 类型: " << std::left << std::setw(32) << resources.gpu_type << "  │\n";
+        std::cout << "│  5. 存储空间(GB): " << std::left << std::setw(27) << resources.total_storage_gb << "   │\n";
         std::cout << "│  6. 管理GPU类型列表                             │\n";
         std::cout << "│                                                 │\n";
         std::cout << "│  0. 保存并返回                                  │\n";
@@ -405,7 +405,7 @@ void admin_revise()
 
                     // 显示所有GPU类型
                     for (size_t i = 0; i < gpu_types.size(); i++) {
-                        std::cout << "│  " << (i + 1) << ". " << std::left << std::setw(41) << gpu_types[i] << "│\n";
+                        std::cout << "│  " << (i + 1) << ". " << std::left << std::setw(42) << gpu_types[i] << "│\n";
                     }
 
                     std::cout << "│                                                 │\n";
@@ -426,7 +426,9 @@ void admin_revise()
                         {
                             std::cout << "\n\n请输入新的GPU类型名称: ";
                             std::string new_gpu;
-                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                            std::cin.clear();
+                            std::cin.sync();
+                            clearInputBuffer();
                             std::getline(std::cin, new_gpu);
                             if (!new_gpu.empty()) {
                                 gpu_types.push_back(new_gpu);
@@ -706,7 +708,7 @@ void _status()
         else
             std::cout << "□";
     }
-    std::cout << "] " << std::fixed << std::setprecision(1) << cpu_threads_pct << "%            │\n";
+    std::cout << "] " << std::fixed << std::setprecision(1) << cpu_threads_pct << "%           │\n";
 
     // GPU使用进度条
     std::cout << "│ GPU数量: [";
